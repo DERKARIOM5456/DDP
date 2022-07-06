@@ -1,1 +1,0 @@
-3 3 struct /homme/projet/struct2 guil /homme/projet/guil1 ddp /homme/projet/ddp

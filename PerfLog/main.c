@@ -39,8 +39,8 @@ Depot AddDepot(Depot dp , char* nom , char *chemin)
 }
 void Sauvegarder(Depot dp)
 {
-    FILE *fp = fopen("fichier.txt","w");
-    FILE *fig = fopen("fig.txt","w");
+    FILE *fp = fopen("log.txt","w");
+    FILE *fig = fopen("donnee.txt","w");
     cell *ptr;
     fprintf(fig,"%d ",NbrDepot(dp));
     for(ptr=dp ; ptr!=NULL ; ptr=ptr->suivant)
@@ -50,29 +50,61 @@ void Sauvegarder(Depot dp)
         fprintf(fp,"Nom : %s\n" , ptr->nom);
         fprintf(fp,"Chemin : %s\n" , ptr->chemin);
         fprintf(fp,"\n--------------------------------------\n");
-        fprintf(fig,"%d %s %s",ptr->num,ptr->nom,ptr->chemin);
+        fprintf(fig,"%s %s ",ptr->nom,ptr->chemin);
     }
     fclose(fp);
 }
 Depot ChargeFichier()
 {
-    Depot dp;
-    dp = DepotVide();
-    FILE *fp = fopen("fig.txt","r");
+    Depot dp = DepotVide();
+    cell *nouv,*ptr;
+    int num;
+    char *nom = (char*)malloc(sizeof(char)*20);
+    char *chemin = (char*)malloc(sizeof(char)*50);
+    FILE *fp = fopen("donnee.txt","r");
     int i,nbr;
-    while (!feof(fp))
+    fscanf(fp,"%d",&nbr);
+    for(i=nbr;i>0;i--)
     {
-        fscanf(fp,"%d %s %s",&dp->num,dp->nom,dp->chemin);
+        nouv = (cell*)malloc(sizeof(cell));
+        nouv->nom=(char*)malloc(sizeof(char)*20);
+        nouv->chemin=(char*)malloc(sizeof(char)*50);
+        fscanf(fp,"%s %s",nouv->nom,nouv->chemin);
+        nouv->num = i;
+        if(i==nbr)
+            dp = nouv;
+        else
+        {
+            ptr = dp;
+            while(ptr->suivant != NULL)
+                ptr = ptr->suivant;
+            ptr->suivant = nouv;
+        }
     }
-    
+    return dp; 
+}
+void Affichier(Depot dp)
+{
+    cell *ptr;
+    ptr = dp;
+    while(ptr!=NULL)
+    {
+        printf("\nCode : %d\n",ptr->num);
+        printf("Nom : %s\n",ptr->nom);
+        printf("Chemin : %s\n",ptr->chemin);
+        ptr = ptr->suivant;
+    }
 }
 int main()
 {
     Depot dp;
-    dp = DepotVide();
-    dp = AddDepot(dp,"ddp","/homme/projet/ddp");
-    dp = AddDepot(dp,"guil","/homme/projet/guil");
-    dp = AddDepot(dp,"struct","/homme/projet/struct");
-    printf("%d\n",NbrDepot(dp));
-    Sauvegarder(dp);
+    // dp = DepotVide();
+    // dp = AddDepot(dp,"ddp","/homme/projet/ddp");
+    // dp = AddDepot(dp,"guil","/homme/projet/guil");
+    // dp = AddDepot(dp,"struct","/homme/projet/struct");
+    // printf("%d\n",NbrDepot(dp));
+    // Sauvegarder(dp);
+    dp=ChargeFichier(dp);
+    Affichier(dp);
+    return 0;
 }
