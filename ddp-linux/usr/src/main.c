@@ -95,16 +95,47 @@ void Affichier(Depot dp)
         ptr = ptr->suivant;
     }
 }
-int main()
+Depot DropDepot(Depot dp , char *nom)
 {
-    Depot dp;
-    // dp = DepotVide();
-    // dp = AddDepot(dp,"ddp","/homme/projet/ddp");
-    // dp = AddDepot(dp,"guil","/homme/projet/guil");
-    // dp = AddDepot(dp,"struct","/homme/projet/struct");
-    // printf("%d\n",NbrDepot(dp));
-    // Sauvegarder(dp);
-    dp=ChargeFichier(dp);
-    Affichier(dp);
-    return 0;
+    cell *ptr,*q;
+    ptr = dp;
+    if (strcmp(dp->nom,nom) == 0)
+    {
+        dp = dp->suivant;
+        free(ptr);
+    }
+    else
+    {
+        q = ptr->suivant;
+        while(q != NULL && strcmp(q->nom,nom)!=0)
+        {
+            ptr = ptr->suivant;
+            q = q->suivant;
+        }
+        if(ptr != NULL)
+        {
+            ptr->suivant = q->suivant;
+            free(q);
+        }
+        else
+            fprintf(stderr,"Ce depot n'existe pas !\n");
+    }
+    return dp;
+}
+int main(int argc , char ** argv)
+{
+    Depot dp = DepotVide();
+    dp = ChargeFichier(dp);
+    printf("%d\n",argc);
+    printf("%s\n",argv[1]);
+   if ((strcmp(argv[1],"add")==0) && (argc == 4))
+    {
+        dp=AddDepot(dp,argv[2],argv[3]);
+        Sauvegarder(dp);
+    }
+    if ((strcmp(argv[1],"drop")==0) && (argc == 3))
+    {
+        dp=DropDepot(dp,argv[2]);
+        Sauvegarder(dp);
+    }
 }
