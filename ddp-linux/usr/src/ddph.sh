@@ -25,8 +25,12 @@ CreationBDD()
             mkdir ddp-projet
         fi
     fi
+    if [ ! -f "/usr/src/donnee.txt" ] ; then
+        sudo touch /usr/src/donnee.txt /usr/src/log.txt
+        sudo chmod 666 /usr/src/donnee.txt /usr/src/log.txt
+        echo "0" > /usr/src/donnee.txt
+    fi
 }
-
 Version()
 {
     echo "DERKARIOM DEPOT DES PROJETS VERSION 2.2.1 :)"
@@ -61,20 +65,7 @@ manuel()
 #-------------------------------------------------------------------
 log()
 {
-    cd ~/.ddp/ddp-projet 2> /dev/null
-    if [ "$?" -eq 0 ] ; then
-        echo -e "\t\tLISTE DES PROJETS\n"
-        i=1
-        for pro in *
-        {
-            if [ -d "$pro" ] ; then
-                echo -e "\n$i -> ${pro}"
-                i=i+1
-            fi
-        } 
-    else
-        echo "ECHEC !"
-    fi
+    cat /usr/src/log.txt
 }
 
 #--------------------------------------------------------------------
@@ -149,6 +140,7 @@ Supp()
     if [ "$?" -eq 0 ] ; then
         if [ -e "$1" ] ; then
             rm -r "$1"
+            dplog drop "$1"
         else
             echo "ECHEC -> ${1^^} N' EXISTE PAS !"
         fi
@@ -288,7 +280,7 @@ Add2()
         if [ $i -ne 3 ] ; then
             echo "ECHEC ! : CE PROJET EXISTE DEJA"
         else
-            dp add "$1" "$2"
+            dplog add "$1" "$c"
         fi
     fi
 }

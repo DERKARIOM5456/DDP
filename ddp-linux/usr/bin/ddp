@@ -16,22 +16,22 @@ CreationBDD
 # Si le nombre d' argument vaut zero(0) 
 if [ $# -eq 0 ] ; then
     (echo "ERREUR-> AUCUN PARAMETRE" >&2)
-    manuel | less
+    manuel | more
 # -v pour voir la version de Derkariom depot de projet (DDP)
 elif [ "$1" = "-v" -o "$1" == "--version" ] ; then
     Version
 # pour visiter le manuel de Derkariom depot des projets (DDP)
 elif [ "$1" == "-h" -o "$1" == "--help" ] ; then
-    manuel | less
+    manuel | more
 #Pour afficher plus d' information
 elif [ "$1" == "-i" -o "$1" == "--information" ] ;then
-    info | less
+    info | more
 # Syntax: ddp new | add : pour cree un nouveau projet
 elif [ "$1" == "new" -o "$1" == "add" -a "$#" == 1 ] ; then
     Add0
 # Syntax: ddp log : pour lister tout les depots
 elif [ "$1" == "log" -a "$#" -eq 1 ] ; then
-    log | less
+    log | more 
 # Syntax: ddp del <projet> : pour suprimer le depot d' un projet 
 elif [ "$1" == "del" -o "$1" == "drop" -a "$#" -eq 2 ] ; then
     Supp "$2"

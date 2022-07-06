@@ -39,17 +39,17 @@ Depot AddDepot(Depot dp , char* nom , char *chemin)
 }
 void Sauvegarder(Depot dp)
 {
-    FILE *fp = fopen("log.txt","w");
-    FILE *fig = fopen("donnee.txt","w");
+    FILE *fp = fopen("/usr/src/log.txt","w");
+    FILE *fig = fopen("/usr/src/donnee.txt","w");
     cell *ptr;
     fprintf(fig,"%d ",NbrDepot(dp));
     for(ptr=dp ; ptr!=NULL ; ptr=ptr->suivant)
     {
         fprintf(fp,"\n");
-        fprintf(fp,"Numero : %d\n" , ptr->num);
-        fprintf(fp,"Nom : %s\n" , ptr->nom);
+        fprintf(fp,"Depot  : %d\n" , ptr->num);
+        fprintf(fp,"Nom    : %s\n" , ptr->nom);
         fprintf(fp,"Chemin : %s\n" , ptr->chemin);
-        fprintf(fp,"\n--------------------------------------\n");
+        fprintf(fp,"\n\n");
         fprintf(fig,"%s %s ",ptr->nom,ptr->chemin);
     }
     fclose(fp);
@@ -61,7 +61,7 @@ Depot ChargeFichier()
     int num;
     char *nom = (char*)malloc(sizeof(char)*20);
     char *chemin = (char*)malloc(sizeof(char)*50);
-    FILE *fp = fopen("donnee.txt","r");
+    FILE *fp = fopen("/usr/src/donnee.txt","r");
     int i,nbr;
     fscanf(fp,"%d",&nbr);
     for(i=nbr;i>0;i--)
@@ -126,8 +126,6 @@ int main(int argc , char ** argv)
 {
     Depot dp = DepotVide();
     dp = ChargeFichier(dp);
-    printf("%d\n",argc);
-    printf("%s\n",argv[1]);
    if ((strcmp(argv[1],"add")==0) && (argc == 4))
     {
         dp=AddDepot(dp,argv[2],argv[3]);
