@@ -39,20 +39,21 @@ Depot AddDepot(Depot dp , char* nom , char *chemin)
 }
 void Sauvegarder(Depot dp)
 {
-    FILE *fp = fopen("/usr/src/log.txt","w");
-    FILE *fig = fopen("/usr/src/donnee.txt","w");
+    FILE *log = fopen("/usr/src/log.txt","w");
+    FILE *bdd = fopen("/usr/src/donnee.txt","w");
     cell *ptr;
-    fprintf(fig,"%d ",NbrDepot(dp));
+    fprintf(bdd,"%d ",NbrDepot(dp));
     for(ptr=dp ; ptr!=NULL ; ptr=ptr->suivant)
     {
-        fprintf(fp,"\n");
-        fprintf(fp,"Depot  : %d\n" , ptr->num);
-        fprintf(fp,"Nom    : %s\n" , ptr->nom);
-        fprintf(fp,"Chemin : %s\n" , ptr->chemin);
-        fprintf(fp,"\n\n");
-        fprintf(fig,"%s %s ",ptr->nom,ptr->chemin);
+        fprintf(log,"\n");
+        fprintf(log,"Depot  : %d\n" , ptr->num);
+        fprintf(log,"Nom    : %s\n" , ptr->nom);
+        fprintf(log,"Chemin : %s\n" , ptr->chemin);
+        fprintf(log,"\n\n");
+        fprintf(bdd,"%s %s ",ptr->nom,ptr->chemin);
     }
-    fclose(fp);
+    fclose(log);
+    fclose(bdd);
 }
 Depot ChargeFichier()
 {
