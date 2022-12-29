@@ -5,6 +5,8 @@ manuel()
     clear
     echo -e "\n\nLEGANT: OU(|) ET(&)\n"
     echo -e "\n\nddp -v | --version -> Pour afficher la version de ddp\n"
+    echo -e "ddp -h | --help -> Pour afficher le manuel\n"
+    echo -e "ddp -i | --information -> Pour afficher plus d' information\n"
     echo -e "ddp new | add -> Pour ajouter un nouveau projet\n"
     echo -e "ddp add <NomProjet> <CheminProjet>  -> Pour creer un depot du chemin de votre projet\n"
     echo -e "ddp add <NomProjet> <CheminProjet> <CodeCompiler> <CodeExecution>  -> Pour creer un depot de votre projet\n"
@@ -21,6 +23,38 @@ manuel()
     echo -e "ddp --os restor <NomDepot> : Pour restore votre OS"
     echo -e "ddp --os log : Pour afficher les depot system"
     echo -e "ddp --os drop <NomDepot> : Pour supprimer un depot system"
+}
+log()
+{
+    cd ~/.ddp/ddp-projet 2> /dev/null
+    if [ "$?" -eq 0 ] ; then
+        echo -e "\t\tLISTE DES PROJETS\n"
+        i=1
+        for pro in *
+        {
+            if [ -d "$pro" ] ; then
+                echo -e "\n$i -> ${pro}"
+                i=i+1
+            fi
+        } 
+    else
+        echo "ECHEC !"
+    fi
+}
+info()
+{
+    echo "**************************************************************************"
+    echo "# NOM: DERKARIOM DEPOT DES PROJETS (DDP)                                 #"
+    echo "# VERSION: 2.2                                                           #"
+    echo "# LICENCE: LIBRE                                                         #"
+    echo "# CONSERNE: TOUTE PERSONNE AYANT DES CONNAISSANCES SUR UNIX              #"
+    echo "# DATE:01/01/2023                                                        #"
+    echo "# NATIONALITE: NIGERIENNE                                                #"
+    echo "# AUTEUR: BACHIR ABDOUL KADER                                            #" 
+    echo "# PROFESION: ETUDIANT A L' UNIVERSITE ABDOU MOUMOUNI DE NIAMEY           #" 
+    echo "# CLUB: LES VISIONNAIRES                                                 #"
+    echo "# PROJET: DERKARIOM                                                      #"
+    echo "**************************************************************************"                     
 }
 declare -i k
 declare -i i
@@ -58,11 +92,14 @@ if [ $# -eq 0 ] ; then
 
 # -v pour voir la version de Derkariom depot de projet (DDP)
 elif [ "$1" = "-v" -o "$1" == "--version" ] ; then
-    echo "DERKARIOM DEPOT DES PROJETS VERSION 1.9.1 BETA :)"
+    echo "DERKARIOM DEPOT DES PROJETS VERSION 2.2 :)"
 
 # pour visiter le manuel de Derkariom depot des projets (DDP)
 elif [ "$1" == "-h" -o "$1" == "--help" ] ; then
     manuel | less
+
+elif [ "$1" == "-i" -o "$1" == "--information" ] ;then
+    info | less
 
 # Syntax: ddp new | add : pour cree un nouveau projet
 elif [ "$1" == "new" -o "$1" == "add" -a "$#" == 1 ] ; then
@@ -117,20 +154,7 @@ fi
 
 # Syntax: ddp log : pour lister tout les depots
 elif [ "$1" == "log" -a "$#" -eq 1 ] ; then
-    cd ~/.ddp/ddp-projet 2> /dev/null
-    if [ "$?" -eq 0 ] ; then
-        echo -e "\t\tLISTE DES PROJETS\n"
-        i=1
-        for pro in *
-        {
-            if [ -d "$pro" ] ; then
-                echo -e "\n$i -> ${pro}"
-                i=i+1
-            fi
-        } 
-    else
-        echo "ECHEC !"
-    fi
+    log | less
 
 # Syntax: ddp del <projet> : pour suprimer le depot d' un projet 
 elif [ "$1" == "del" -o "$1" == "drop" -a "$#" -eq 2 ] ; then

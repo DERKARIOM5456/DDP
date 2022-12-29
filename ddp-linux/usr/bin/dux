@@ -1,6 +1,23 @@
 #!/bin/bash
 declare -i k
 declare -i i
+DuxLog()
+{
+    cd ~/.dux/os/ 2> /dev/null
+    if [ "$?" -eq 0 ] ; then
+        echo -e "\t\tLISTE DES VERSION DE L' OS\n"
+        i=1
+        for pro in *
+        {
+            if [ -d "$pro" ] ; then
+                echo -e "\n$i -> ${pro}"
+                i=i+1
+            fi
+        } 
+    else
+        echo "ECHEC !"
+    fi
+}
 repa=$(pwd) # pour sauvegarde le repertoir actuelle avant l' appelle de la commande
 cd ~/      # pour ce rendre au repertoire utilisateurs
 # Creation du repertoire .ddp dans le repertoire utilisateurs s'il n'exist pas
@@ -36,22 +53,9 @@ elif [ "$1" == "new" -o "$1" == "add" -a "$#" == 3 ] ; then
             echo "ECHEC ! : CE PROJET EXISTE DEJA"
         fi
     fi 
-# Syntax: ddp log : pour lister tout les depots
+# Syntax: dux log : pour lister tout les depots
 elif [ "$1" == "log" -a "$#" -eq 1 ] ; then
-    cd ~/.dux/os/ 2> /dev/null
-    if [ "$?" -eq 0 ] ; then
-        echo -e "\t\tLISTE DES VERSION DE L' OS\n"
-        i=1
-        for pro in *
-        {
-            if [ -d "$pro" ] ; then
-                echo -e "\n$i -> ${pro}"
-                i=i+1
-            fi
-        } 
-    else
-        echo "ECHEC !"
-    fi
+    DuxLog | less
 elif [ "$1" == "del" -o "$1" == "drop" -a "$#" -eq 2 ] ; then
     cd ~/.dux/os/ 2> /dev/null
     if [ "$?" -eq 0 ] ; then
