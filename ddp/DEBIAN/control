@@ -1,0 +1,7 @@
+Package:ddp
+Version:1.0
+Architecture:all
+Essential:no
+Priority:optional
+Maintainer:DERKARIOM
+Description:ddp vous permet de bien gerer vos projets

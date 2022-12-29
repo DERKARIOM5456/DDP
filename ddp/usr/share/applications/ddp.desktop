@@ -1,0 +1,10 @@
+[desktop Entry]
+Version=1.0
+Name=Derkariom Depot Des Projets
+GenericName=ddp
+Comment=La commande ddp vous permet de bien gerer vos projet
+Exec=/usr/bin/*
+TryExec=/usr/bin/*
+Terminal=true
+Type=Commande
+Categories=Commande Linux;

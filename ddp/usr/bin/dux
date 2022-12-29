@@ -1,0 +1,67 @@
+#!/bin/bash
+declare -i k
+declare -i i
+repa=$(pwd) # pour sauvegarde le repertoir actuelle avant l' appelle de la commande
+cd ~/      # pour ce rendre au repertoire utilisateurs
+# Creation du repertoire .ddp dans le repertoire utilisateurs s'il n'exist pas
+if [ ! -d ".dux" ]  ; then
+    mkdir .dux
+else
+    cd .dux/ # pour ce rendre dans le repertoire .ddp
+
+    # Creation du sous repertoire ddp-projet dans le repertoire .ddp
+    if [ ! -d "os" ] ; then
+        mkdir os
+    fi
+fi
+
+# Syntax: dux add <nom_os> <device> : pour cree un depot du chemin de votre projet
+if [ "$1" == "-v" -o "$1" == "--version" ] ; then
+    echo "dux -> 0.1 Beta"
+elif [ "$1" == "new" -o "$1" == "add" -a "$#" == 3 ] ; then
+    if [ "$3" == "." ] ; then
+        c=$repa
+    else
+        c=$3
+    fi
+    cd "$c" 2> /dev/null
+    if [ "$?" -ne 0 ] ; then
+        echo "${2^^} EST INTROUVABLE !"
+    else
+        i=0
+        cd ~/.dux/os ; if [ $? -eq 0 ] ; then i=$i+1 ; fi
+        mkdir "$2" 2> /dev/null ; if [ $? -eq 0 ] ; then i=$i+1 ; fi
+        echo "$c" > $2/chemin.txt ; if [ $? -eq 0 ] ; then i=i+1 ; fi
+        if [ $i -ne 3 ] ; then
+            echo "ECHEC ! : CE PROJET EXISTE DEJA"
+        fi
+    fi 
+# Syntax: ddp log : pour lister tout les depots
+elif [ "$1" == "log" -a "$#" -eq 1 ] ; then
+    cd ~/.dux/os/ 2> /dev/null
+    if [ "$?" -eq 0 ] ; then
+        echo -e "\t\tLISTE DES VERSION DE L' OS\n"
+        i=1
+        for pro in *
+        {
+            if [ -d "$pro" ] ; then
+                echo -e "\n$i -> ${pro}"
+                i=i+1
+            fi
+        } 
+    else
+        echo "ECHEC !"
+    fi
+elif [ "$1" == "del" -o "$1" == "drop" -a "$#" -eq 2 ] ; then
+    cd ~/.dux/os/ 2> /dev/null
+    if [ "$?" -eq 0 ] ; then
+        if [ -e "$2" ] ; then
+            rm -r "$2"
+        else
+            echo "ECHEC -> ${2^^} N' EXISTE PAS !"
+        fi
+    else
+        echo "ECHEC !"
+    fi
+
+fi

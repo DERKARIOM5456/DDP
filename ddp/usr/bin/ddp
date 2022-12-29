@@ -4,23 +4,40 @@ manuel()
 {
     clear
     echo -e "\n\nLEGANT: OU(|) ET(&)\n"
-    echo -e "\n\nddp -v | --version -> POUR AFFICHER LA VERSION DE DDP\n"
-    echo -e "ddp new | add -> POUR AJOUTER UN NOUVEAU PROJET\n"
-    echo -e "ddp add <nom_projet> <chemin_projet>  -> POUR CREE UN DEPOT DU CHEMIN DE VOTRE PROJET\n"
-    echo -e "ddp add <nom_projet> <chemin_projet> <code_compiler> <code_execution>  -> POUR CREE UN DEPOT DE VOTRE PROJET\n"
-    echo -e "ddp log -> POUR LISTE LES PROJET SUR DDP\n"
-    echo -e "ddp del <nom_projet> -> POUR SUPPRIME UN PROJET\n"
-    echo -e "ddp code <projet> -> POUR OUVRIRE LE PROJET AVEC VSCODE\n"
-    echo -e "ddp run <projet> -> POUR EXECUTER UN PROJET\n"
-    echo -e "ddp out <nom_projet> -> POUR COMPILE VOTRE PROJET\n"
-    echo -e "ddp xout <nom_projet> -> POUR COMPILE ET EXECUTER VOTRE PROJET\n"
-    echo -e "ddp projet -o -> POUR COMPILE UN PROJET\n"
-    echo -e "ddp projet -ox -> POUR COMPILE ET EXECUTER VOTRE PROJET\n"
+    echo -e "\n\nddp -v | --version -> Pour afficher la version de ddp\n"
+    echo -e "ddp new | add -> Pour ajouter un nouveau projet\n"
+    echo -e "ddp add <NomProjet> <CheminProjet>  -> Pour creer un depot du chemin de votre projet\n"
+    echo -e "ddp add <NomProjet> <CheminProjet> <CodeCompiler> <CodeExecution>  -> Pour creer un depot de votre projet\n"
+    echo -e "ddp log -> Pour lister les projets\n"
+    echo -e "ddp del <NomProjet> -> Pour supprimer un projet\n"
+    echo -e "ddp code <NomProjet> -> Pour ouvrir le projet avec vscode\n"
+    echo -e "ddp run <NomProjet> -> Pour executer le projet\n"
+    echo -e "ddp out <NomProjet> -> Pour compiler le projet\n"
+    echo -e "ddp xout <NomProjet> -> Pour compiler et executer le projet\n"
+    echo -e "ddp <NomProjet> -o [Executable] -> Pour compiler le projet\n"
+    echo -e "ddp <NomProjet> -ox [Executable] -> Pour compiler et executer le projet\n"
+    echo -e "ddp --os add <NomDepot> <CheminDepo> : Pour cree un depot de votre OS"
+    echo -e "ddp --os backup <NomDepot> : Pour Sauvegarde votre OS"
+    echo -e "ddp --os restor <NomDepot> : Pour restore votre OS"
+    echo -e "ddp --os log : Pour afficher les depot system"
+    echo -e "ddp --os drop <NomDepot> : Pour supprimer un depot system"
 }
 declare -i k
 declare -i i
 repa=$(pwd) # pour sauvegarde le repertoir actuelle avant l' appelle de la commande
 cd ~/      # pour ce rendre au repertoire utilisateurs
+
+# ajout de l' alias go sur le shell bash
+grep go ~/.bashrc >> /dev/null
+if [ "$?" != 0 ] ; then
+    echo "alias go='. go'" >> .bashrc
+fi
+
+# ajout de l' alias de go sur le shell zsh
+grep go ~/.zshrc >> /dev/null
+if [ "$?" != 0 ] ; then
+    echo -e "\nalias go='. go'" >> ~/.zshrc
+fi
 
 # Creation du repertoire .ddp dans le repertoire utilisateurs s'il n'exist pas
 if [ ! -d ".ddp" ]  ; then
@@ -41,7 +58,7 @@ if [ $# -eq 0 ] ; then
 
 # -v pour voir la version de Derkariom depot de projet (DDP)
 elif [ "$1" = "-v" -o "$1" == "--version" ] ; then
-    echo "DERKARIOM DEPOT DES PROJETS VERSION 1.9 BETA :)"
+    echo "DERKARIOM DEPOT DES PROJETS VERSION 1.9.1 BETA :)"
 
 # pour visiter le manuel de Derkariom depot des projets (DDP)
 elif [ "$1" == "-h" -o "$1" == "--help" ] ; then
@@ -135,6 +152,22 @@ elif [ "$1" == "code" ] ; then
         i=0
         rep=$(cat chemin.txt) ; if [ "$?" -eq 0 ] ; then i=i+1 ; fi # pour stoker le chemin du projet dans une variable(rep)
         code "$rep" ; if [ "$?" -eq 0 ] ; then i=i+1 ; fi # pour ouvrire le project avec VSCODE
+        if [ "$i" -eq 2 ] ; then
+            echo "SUCCES :)"
+        else
+           echo "ECHEC !"
+        fi
+    else
+        echo "ECHEC !" 
+    fi
+
+# Syntax: ddp code <projet> : pour ouvrire le projet via VSCODE
+elif [ "$1" == "open" ] ; then
+    cd ~/.ddp/ddp-projet/"$2" 2> /dev/null # pour ce rendre dans la base de donne du projet
+    if [ "$?" -eq 0 ] ; then
+        i=0
+        rep=$(cat chemin.txt) ; if [ "$?" -eq 0 ] ; then i=i+1 ; fi # pour stoker le chemin du projet dans une variable(rep)
+        open "$rep" ; if [ "$?" -eq 0 ] ; then i=i+1 ; fi # pour ouvrire le project avec VSCODE
         if [ "$i" -eq 2 ] ; then
             echo "SUCCES :)"
         else
@@ -247,7 +280,17 @@ elif [ "$1" == "new" -o "$1" == "add" -a "$#" == 3 ] ; then
             echo "ECHEC ! : CE PROJET EXISTE DEJA"
         fi
     fi 
-
+# ddp add --os <nom_os> <device>
+elif [ "$1" == "--os" -a "$2" == "new" -o "$2" == "add" -a "$#" == 4 ] ; then
+    sudo dux add "$3" "$4"
+elif [ "$1" == "--os" -a "$2" == "backup" -a "$#" -eq 3 ] ; then
+    sudo dbackup "$3"
+elif [ "$1" == "--os" -a "$2" == "restor" -a "$#" -eq 3 ] ; then
+    sudo drestor "$3"
+elif [ "$1" == "--os" -a "$2" == "log" ] ; then
+    sudo dux "$2"
+elif [ "$1" == "--os" -a "$2" == "drop" -a "$#" == 3 ] ; then
+    sudo dux "$2" "$3"
 # Syntax: ddp add <nom> <chemin> : pour cree un depot du chemin de votre projet
 elif [ "$1" == "new" -o "$1" == "add" -a "$#" -eq 5 ] ; then
     if [ "$3" == "." ] ; then
