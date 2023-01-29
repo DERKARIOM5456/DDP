@@ -1,0 +1,21 @@
+#!/bin/bash
+rep=$(cat ~/.dux/os/"$1"/chemin.txt 2> /dev/null)
+if [ "$?" -eq 1 ] ; then
+    echo "ERREUR-> : \"$1\" EST INTROUVABLE"
+else
+    echo "------------------------------------------------------";
+    echo "- Restauration du système";
+    echo "------------------------------------------------------";
+    echo "";
+
+    echo "Récupération et extraction de l'archive"; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "."; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "."
+
+    # On se place à la /(racine), comme je l'ai expliqué tout à l'heure.
+    cd /
+    # On extrait les répertoires archivés en ne mettant PAS le / devant, comme expliqué tout à l'heure.
+    tar -xvzf /"$rep"/"$1".tar.gz "etc" "root" "home" "var" "usr" "lib"
+    echo "------------------------------------------------------";
+    echo "";
+
+    echo "### Fin de l'extraction des fichiers.  ###";
+fi

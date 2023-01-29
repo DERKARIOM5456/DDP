@@ -1,0 +1,31 @@
+#!/bin/bash
+rep=$(cat ~/.dux/os/"$1"/chemin.txt 2> /dev/null)
+if [ "$?" -eq 1 ] ; then
+    echo "ERREUR-> : \"$1\" EST INTROUVABLE"
+else
+    echo "------------------------------------------------------";
+    echo "- Sauvegarde complète du système";
+    echo "------------------------------------------------------";
+    echo "";
+
+    echo -n "Création de l'archive ." ; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "." ; sleep 1 ; echo -n "." 
+
+    # On crée l'archive .tar en précisant entre guillemets les chemins absolus des dossiers à sauvegarder.
+    tar -cvzf /"$rep"/"$1".tar.gz "/etc/" "/root" "/home" "/var" "/usr/" "/lib/"
+    echo "------------------------------------------------------";
+    echo "";
+
+    echo "Vérification de l'existence de l'archive";
+    # On teste si l'archive a bien été créée
+    if [ -e /"$rep"/"$1".tar.gz ] ; then
+        echo ""
+        echo "Votre archive a bien été créée.";
+        echo ""
+    else
+        echo ""
+        echo "Il y a eu un problème lors de la création de l'archive.";
+        echo ""
+    fi
+
+    echo "### Fin de la sauvegarde.  ###"
+fi

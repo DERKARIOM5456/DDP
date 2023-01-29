@@ -1,0 +1,16 @@
+GoAlias();
+Version() -> ddp [-v | --Version];
+manuel()  -> ddp [-h | --help] ;
+log()     -> ddp [log] ;
+info()    -> ddp [-i | --info] ;
+Add0()    -> ddp [add | new] ;
+Supp()    -> ddp [del | drop] ;
+Code()    -> ddp [code] <NomP> ;
+Open()    -> ddp [open] <NomP> ;
+Out()     -> ddp [out] <NomP> ;
+Xout()    -> ddp [xout] <NomP> ;
+Dgcc()    -> ddp <NomP> -o [Exec] ;
+XDgcc()   -> ddp <NomP> -ox [Exec] ;
+Run()     -> ddp [run] <NomP> ;
+Add2()    -> ddp [add] <NomP> <Repertoire>
+Add4()    -> ddp [add] <NomP> <Repertoire> <CodeCompiler> <CodeExecut>

@@ -1,0 +1,79 @@
+#!/bin/bash
+source /data/data/com.termux/files/usr/src/ddph.sh
+declare -i k
+declare -i i
+#
+repa=$(pwd)
+
+cd ~/
+
+#Ajout de l' alias go='. go' sur bashrc est szhrc
+GoAlias
+
+#Creation de la base de donnee de ddp
+CreationBDD
+
+# Si le nombre d' argument vaut zero(0) 
+if [ $# -eq 0 ] ; then
+    (echo "ERREUR-> AUCUN PARAMETRE" >&2)
+    manuel | less
+# -v pour voir la version de Derkariom depot de projet (DDP)
+elif [ "$1" = "-v" -o "$1" == "--version" ] ; then
+    Version
+# pour visiter le manuel de Derkariom depot des projets (DDP)
+elif [ "$1" == "-h" -o "$1" == "--help" ] ; then
+    manuel | less
+#Pour afficher plus d' information
+elif [ "$1" == "-i" -o "$1" == "--information" ] ;then
+    info | less
+# Syntax: ddp new | add : pour cree un nouveau projet
+elif [ "$1" == "new" -o "$1" == "add" -a "$#" == 1 ] ; then
+    Add0
+# Syntax: ddp log : pour lister tout les depots
+elif [ "$1" == "log" -a "$#" -eq 1 ] ; then
+    log | less
+# Syntax: ddp del <projet> : pour suprimer le depot d' un projet 
+elif [ "$1" == "del" -o "$1" == "drop" -a "$#" -eq 2 ] ; then
+    Supp "$2"
+# Syntax: ddp code <projet> : pour ouvrire le projet via VSCODE
+elif [ "$1" == "code" ] ; then
+    Code "$2"
+# Syntax: ddp code <projet> : pour ouvrire le projet via GUI
+elif [ "$1" == "open" ] ; then
+    Open "$2"
+# Syntax: ddp out <projet> : pour compiler un projet
+elif [ "$1" == "out" ] ; then
+    Out "$2"
+# Syntax: ddp out <projet> : pour compiler & executer un projet
+elif [ "$1" == "xout" ] ; then
+    Xout "$2"
+# Syntax: ddp <projet> -o : pour compiler un projet
+elif [ "$2" == "-o" ] ; then
+    Dgcc "$1" "$3"
+# Syntax: ddp <projet> -ox | xout : pour compiler & execution un projet
+elif [ "$2" == "-ox" ] ; then 
+    XDgcc "$1" "$3"
+# Syntax: ddp run <projet> : pour executer le projet
+elif [ "$1" == "run" ] ; then
+    Run "$2"
+# Syntax: ddp add <nom> <chemin> : pour cree un depot du chemin de votre projet
+elif [ "$1" == "new" -o "$1" == "add" -a "$#" == 3 ] ; then
+    Add2 "$2" "$3"
+# ddp add --os <nom_os> <device>
+elif [ "$1" == "--os" -a "$2" == "new" -o "$2" == "add" -a "$#" == 4 ] ; then
+    sudo dux add "$3" "$4"
+elif [ "$1" == "--os" -a "$2" == "backup" -a "$#" -eq 3 ] ; then
+    sudo dbackup "$3"
+elif [ "$1" == "--os" -a "$2" == "restor" -a "$#" -eq 3 ] ; then
+    sudo drestor "$3"
+elif [ "$1" == "--os" -a "$2" == "log" ] ; then
+    sudo dux "$2"
+elif [ "$1" == "--os" -a "$2" == "drop" -a "$#" == 3 ] ; then
+    sudo dux "$2" "$3"
+# Syntax: ddp add <nom> <chemin> : pour cree un depot du chemin de votre projet
+elif [ "$1" == "new" -o "$1" == "add" -a "$#" -eq 5 ] ; then
+    shift 1
+    Add4 "$@"
+else
+    manuel | less
+fi
