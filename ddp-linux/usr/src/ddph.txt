@@ -14,3 +14,6 @@ XDgcc()   -> ddp <NomP> -ox [Exec] ;
 Run()     -> ddp [run] <NomP> ;
 Add2()    -> ddp [add] <NomP> <Repertoire>
 Add4()    -> ddp [add] <NomP> <Repertoire> <CodeCompiler> <CodeExecut>
+
+dp [add] <NomP> <chemin>
+dp [drop] <NomP>

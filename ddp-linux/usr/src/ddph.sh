@@ -287,6 +287,8 @@ Add2()
         echo "$c" > $1/chemin.txt ; if [ $? -eq 0 ] ; then i=i+1 ; fi
         if [ $i -ne 3 ] ; then
             echo "ECHEC ! : CE PROJET EXISTE DEJA"
+        else
+            dp add "$1" "$2"
         fi
     fi
 }

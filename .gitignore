@@ -1,3 +1,5 @@
 *.deb
 *.pdf
 ddp-linux/usr/bin/dplog
+ddp-linux/usr/src/donnee.txt
+ddp-linux/usr/src/log.txt
