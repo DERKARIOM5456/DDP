@@ -47,7 +47,7 @@ void Sauvegarder(Depot dp)
     {
         fprintf(log,"\n");
         fprintf(log,"Depot  : %d\n" , ptr->num);
-        fprintf(log,"Nom    : %s\n" , ptr->nom);
+        fprintf(log,"Alias  : %s\n" , ptr->nom);
         fprintf(log,"Chemin : %s\n" , ptr->chemin);
         fprintf(log,"\n\n");
         fprintf(bdd,"%s %s ",ptr->nom,ptr->chemin);
@@ -84,18 +84,18 @@ Depot ChargeFichier()
     }
     return dp; 
 }
-void Affichier(Depot dp)
-{
-    cell *ptr;
-    ptr = dp;
-    while(ptr!=NULL)
-    {
-        printf("\nCode : %d\n",ptr->num);
-        printf("Nom : %s\n",ptr->nom);
-        printf("Chemin : %s\n",ptr->chemin);
-        ptr = ptr->suivant;
-    }
-}
+// void Affichier(Depot dp)
+// {
+//     cell *ptr;
+//     ptr = dp;
+//     while(ptr!=NULL)
+//     {
+//         printf("\nCode : %d\n",ptr->num);
+//         printf("Nom : %s\n",ptr->nom);
+//         printf("Alias : %s\n",ptr->chemin);
+//         ptr = ptr->suivant;
+//     }
+// }
 Depot DropDepot(Depot dp , char *nom)
 {
     cell *ptr,*q;
